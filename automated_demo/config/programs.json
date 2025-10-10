@@ -1,0 +1,35 @@
+{
+  "coreutils": {
+    "type": "cli",
+    "programs": ["cp", "chmod", "dd", "df", "du", "ln", "ls", "mkdir", "mv", "rm", "rmdir", "split", "touch"],
+    "build_cmd": "cd obj-llvm/src && extract-bc -o {program}.base.bc ./{program}",
+    "test_cmd": "./test-harness-generic.sh {program}",
+    "libs": "-ldl -lpthread -lselinux -lcap",
+    "extra_libs": "libacl libattr",
+    "thresholds": {"min_occurrence": 3, "max_values": 5}
+  },
+  "apr": {
+    "type": "library",
+    "programs": ["apr_test"],
+    "build_cmd": "./configure CC=clang CFLAGS='-g -O0' && make",
+    "driver": "drivers/apr_driver.c",
+    "libs": "-lapr-1",
+    "thresholds": {"min_occurrence": 3, "max_values": 10}
+  },
+  "m4": {
+    "type": "cli",
+    "programs": ["m4"],
+    "build_cmd": "./configure CC=clang CFLAGS='-g -O0' && make",
+    "test_cmd": "make check",
+    "libs": "-ldl",
+    "thresholds": {"min_occurrence": 5, "max_values": 8}
+  },
+  "busybox": {
+    "type": "multi",
+    "programs": ["echo", "cat", "ls", "mkdir", "rm"],
+    "build_cmd": "make defconfig && make CC=clang",
+    "test_cmd": "./testsuite/runtest {program}",
+    "libs": "-lm",
+    "thresholds": {"min_occurrence": 3, "max_values": 5}
+  }
+}
