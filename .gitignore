@@ -16,10 +16,6 @@ ENV/
 env/
 pip-wheel-metadata/
 
-# Virtualenv / poetry / pipenv
-.poetry/
-.python-version
-
 # Logs/results/artifacts
 logs/
 results/
