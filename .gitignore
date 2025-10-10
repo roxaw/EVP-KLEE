@@ -1,0 +1,62 @@
+# OS/editor
+.DS_Store
+.idea/
+.vscode/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+.eggs/
+.venv/
+venv/
+ENV/
+env/
+pip-wheel-metadata/
+
+# Virtualenv / poetry / pipenv
+.poetry/
+.python-version
+
+# Logs/results/artifacts
+logs/
+results/
+artifacts/
+evp_artifacts/
+klee-out-*/
+klee-last/
+
+# Build + LLVM/KLEE byproducts
+build/
+obj/
+obj-llvm/
+CMakeFiles/
+CMakeCache.txt
+cmake-build-*/
+compile_commands.json
+*.o
+*.so
+*.a
+*.bc
+*.ll
+*.s
+*.out
+*.log
+
+# Coverage
+.coverage
+htmlcov/
+coverage.xml
+
+# Environment and secrets
+.env
+.env.*
+*.pem
+*.key
+
+# Misc
+*.swp
+*.tmp
+*.bak

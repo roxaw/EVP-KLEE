@@ -1,0 +1,3 @@
+printf: warning: ": character(s) following character constant have been ignored
+printf: '"': expected a numeric value
+printf: 'a': expected a numeric value
