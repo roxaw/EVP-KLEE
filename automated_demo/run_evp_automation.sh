@@ -23,6 +23,28 @@ fi
 # Generate drivers if needed
 python3 drivers/driver_generator.py
 
+# Coreutils build/extract is handled once via the provided tarball path and separate process
+# Here we just validate frozen artifacts exist and checksums match
+echo "[INFO] Validating frozen base bitcode artifacts..."
+FROZEN_DIR="benchmarks/evp_artifacts/frozen"
+missing=0
+while read -r util; do
+  [[ -z "$util" ]] && continue
+  if [ ! -f "$FROZEN_DIR/${util}.base.bc" ] || [ ! -f "$FROZEN_DIR/${util}.base.bc.sha256" ]; then
+    echo "[ERROR] Missing frozen artifact or checksum for $util in $FROZEN_DIR"; missing=1
+  else
+    calc=$(sha256sum "$FROZEN_DIR/${util}.base.bc" | awk '{print $1}')
+    recorded=$(awk '{print $1}' "$FROZEN_DIR/${util}.base.bc.sha256")
+    if [ "$calc" != "$recorded" ]; then
+      echo "[ERROR] Checksum mismatch for $util"; missing=1
+    fi
+  fi
+done < <(python3 -c "import json;print('\n'.join(json.load(open('config/programs.json'))['coreutils']['programs']))")
+
+if [ $missing -ne 0 ]; then
+  echo "[FATAL] Frozen artifacts validation failed; aborting pipeline run."; exit 1
+fi
+
 # Run pipeline
 echo "[INFO] Starting batch processing..."
 
