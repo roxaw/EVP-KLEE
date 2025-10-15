@@ -49,14 +49,37 @@ class EVPPipeline:
         prog_dir = self.artifacts_dir / category / program
         prog_dir.mkdir(parents=True, exist_ok=True)
         
-        # For coreutils, use existing script
+        # For coreutils, consume frozen base bitcode (built/extracted once), verify checksum, then copy
         if category == "coreutils":
-            cmd = f"./evp_step1_collect.sh {program}"
-            result = self.run_command(cmd, cwd=self.env["ROOT"])
-            if result.returncode != 0:
-                print(f"[WARNING] Step1 script failed, creating placeholder bitcode...")
-                # Create placeholder bitcode if script fails
-                self.create_placeholder_bitcode(program, prog_dir)
+            # Use frozen base bitcode under automated_demo/benchmarks/evp_artifacts/frozen
+            freeze_dir = Path(__file__).parent / "benchmarks" / "evp_artifacts" / "frozen"
+            frozen_bc = freeze_dir / f"{program}.base.bc"
+            checksum_file = freeze_dir / f"{program}.base.bc.sha256"
+            if not frozen_bc.exists() or not checksum_file.exists():
+                raise RuntimeError(
+                    f"Frozen base bitcode or checksum missing for {program}. Run coreutils_build_extract.sh --build-only and --extract-only first."
+                )
+            # Validate checksum
+            import hashlib
+            h = hashlib.sha256()
+            with open(frozen_bc, 'rb') as fb:
+                for chunk in iter(lambda: fb.read(1024 * 1024), b''):
+                    h.update(chunk)
+            computed = h.hexdigest()
+            with open(checksum_file, 'r') as cf:
+                recorded = cf.read().strip().split()[0]
+            if computed != recorded:
+                raise RuntimeError(
+                    f"Checksum mismatch for {program}.base.bc (computed {computed}, recorded {recorded})."
+                )
+            # Copy into program artifacts dir for instrumentation
+            dst_bc = prog_dir / f"{program}.base.bc"
+            try:
+                import shutil
+                shutil.copy2(frozen_bc, dst_bc)
+                print(f"[OK] Using frozen base bitcode -> {dst_bc}")
+            except Exception as e:
+                raise RuntimeError(f"Failed to copy frozen base bitcode: {e}")
             return prog_dir
         
         # For other programs, adapt the process
@@ -112,8 +135,40 @@ class EVPPipeline:
         
         # Run tests based on type
         if category == "coreutils":
-            cmd = f"./test-harness-generic.sh {program}"
-            subprocess.run(cmd, shell=True, env=env, cwd=self.env["ROOT"])
+            # Check if official unit tests exist for this utility
+            tests_dir = Path(__file__).parent / "benchmarks" / "coreutils" / "coreutils-8.31" / "tests"
+            utility_test_dir = tests_dir / program
+            
+            if utility_test_dir.exists() and utility_test_dir.is_dir():
+                print(f"[INFO] Using official unit tests for {program}")
+                # Set PATH to prioritize instrumented binary
+                instrumented_bin_dir = str(prog_dir)
+                env["PATH"] = f"{instrumented_bin_dir}:{env.get('PATH', '')}"
+                
+                # Run official unit tests from the main tests directory
+                try:
+                    result = subprocess.run(
+                        ["make", "check", f"TESTS={program}"], 
+                        env=env, 
+                        cwd=tests_dir,
+                        capture_output=True, 
+                        text=True,
+                        timeout=300  # 5 minute timeout
+                    )
+                    if result.returncode == 0:
+                        print(f"[OK] Official tests completed for {program}")
+                    else:
+                        print(f"[WARNING] Official tests failed for {program}: {result.stderr}")
+                except subprocess.TimeoutExpired:
+                    print(f"[WARNING] Official tests timed out for {program}")
+                except Exception as e:
+                    print(f"[ERROR] Failed to run official tests for {program}: {e}")
+            else:
+                print(f"[INFO] No official tests found for {program}, using generic harness")
+                # Fall back to generic test harness
+                test_harness = Path(__file__).parent / "test-harness-generic.sh"
+                cmd = f"bash {test_harness} {program}"
+                subprocess.run(cmd, shell=True, env=env, cwd=Path(__file__).parent)
         elif cfg["type"] == "library":
             # Run driver program
             driver_exe = prog_dir / f"{program}_driver"
@@ -123,10 +178,14 @@ class EVPPipeline:
             test_cmd = cfg["test_cmd"].format(program=program)
             subprocess.run(test_cmd, shell=True, env=env)
         
+        # Validate value log collection
+        self.validate_value_log(vase_log, program)
+        
         # Generate map
         thresholds = cfg["thresholds"]
         map_file = prog_dir / "limitedValuedMap.json"
-        generate_script = Path(self.env["ROOT"]) / "generate_limited_map.py"
+        # Use generate_limited_map.py from automated_demo directory
+        generate_script = Path(__file__).parent / "generate_limited_map.py"
         cmd = f"""python3 {generate_script} \
                   --log {vase_log} \
                   --out {map_file} \
@@ -136,6 +195,35 @@ class EVPPipeline:
         
         print(f"[OK] Generated map -> {map_file}")
         return map_file
+    
+    def validate_value_log(self, vase_log, program):
+        """Validate VASE value log collection"""
+        print(f"[VALIDATE] Checking value log for {program}")
+        
+        # Check if log exists
+        if not vase_log.exists():
+            print(f"[ERROR] Value log not found: {vase_log}")
+            return False
+        
+        # Check if log is non-empty
+        log_size = vase_log.stat().st_size
+        if log_size == 0:
+            print(f"[WARNING] Value log is empty: {vase_log}")
+            return False
+        
+        # Check log format (basic validation)
+        try:
+            with open(vase_log, 'r') as f:
+                first_line = f.readline().strip()
+                if not first_line or len(first_line) < 10:  # Basic format check
+                    print(f"[WARNING] Value log format may be invalid: {vase_log}")
+                    return False
+        except Exception as e:
+            print(f"[ERROR] Failed to read value log: {e}")
+            return False
+        
+        print(f"[OK] Value log validated: {vase_log} ({log_size} bytes)")
+        return True
     
     def phase3_evaluate(self, category, program, prog_dir, map_file):
         """Phase 3: Run comprehensive KLEE evaluation with parallel execution"""
@@ -149,7 +237,7 @@ class EVPPipeline:
         # Get test environment file if specified
         test_env = None
         if klee_config.get("test_env"):
-            test_env_path = self.env["ROOT"] / klee_config["test_env"]
+            test_env_path = Path(self.env["ROOT"]) / klee_config["test_env"]
             if test_env_path.exists():
                 test_env = test_env_path
             else:
