@@ -56,3 +56,4 @@ coverage.xml
 *.swp
 *.tmp
 *.bak
+automated_demo/benchmarks/**/sandbox.tgz
