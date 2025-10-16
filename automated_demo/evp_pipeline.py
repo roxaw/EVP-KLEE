@@ -145,12 +145,13 @@ class EVPPipeline:
                 instrumented_bin_dir = str(prog_dir)
                 env["PATH"] = f"{instrumented_bin_dir}:{env.get('PATH', '')}"
                 
-                # Run official unit tests from the main tests directory
+                # Run official unit tests from the configured build directory
+                build_dir = Path(__file__).parent / "benchmarks" / "coreutils" / "coreutils-8.31" / "obj-llvm"
                 try:
                     result = subprocess.run(
                         ["make", "check", f"TESTS={program}"], 
                         env=env, 
-                        cwd=tests_dir,
+                        cwd=build_dir,
                         capture_output=True, 
                         text=True,
                         timeout=300  # 5 minute timeout
@@ -159,10 +160,25 @@ class EVPPipeline:
                         print(f"[OK] Official tests completed for {program}")
                     else:
                         print(f"[WARNING] Official tests failed for {program}: {result.stderr}")
+                        print(f"[INFO] Falling back to generic harness for {program}")
+                        # Fall back to generic test harness
+                        test_harness = Path(__file__).parent / "test-harness-generic.sh"
+                        cmd = f"bash {test_harness} {program}"
+                        subprocess.run(cmd, shell=True, env=env, cwd=Path(__file__).parent)
                 except subprocess.TimeoutExpired:
                     print(f"[WARNING] Official tests timed out for {program}")
+                    print(f"[INFO] Falling back to generic harness for {program}")
+                    # Fall back to generic test harness
+                    test_harness = Path(__file__).parent / "test-harness-generic.sh"
+                    cmd = f"bash {test_harness} {program}"
+                    subprocess.run(cmd, shell=True, env=env, cwd=Path(__file__).parent)
                 except Exception as e:
                     print(f"[ERROR] Failed to run official tests for {program}: {e}")
+                    print(f"[INFO] Falling back to generic harness for {program}")
+                    # Fall back to generic test harness
+                    test_harness = Path(__file__).parent / "test-harness-generic.sh"
+                    cmd = f"bash {test_harness} {program}"
+                    subprocess.run(cmd, shell=True, env=env, cwd=Path(__file__).parent)
             else:
                 print(f"[INFO] No official tests found for {program}, using generic harness")
                 # Fall back to generic test harness
