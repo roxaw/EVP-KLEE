@@ -1,0 +1,80 @@
+[
+  {
+    "program": "cp",
+    "category": "coreutils",
+    "status": "failed",
+    "error": "Frozen base bitcode or checksum missing for cp. Run coreutils_build_extract.sh --build-only and --extract-only first."
+  },
+  {
+    "program": "chmod",
+    "category": "coreutils",
+    "status": "failed",
+    "error": "Frozen base bitcode or checksum missing for chmod. Run coreutils_build_extract.sh --build-only and --extract-only first."
+  },
+  {
+    "program": "dd",
+    "category": "coreutils",
+    "status": "failed",
+    "error": "Frozen base bitcode or checksum missing for dd. Run coreutils_build_extract.sh --build-only and --extract-only first."
+  },
+  {
+    "program": "df",
+    "category": "coreutils",
+    "status": "failed",
+    "error": "Frozen base bitcode or checksum missing for df. Run coreutils_build_extract.sh --build-only and --extract-only first."
+  },
+  {
+    "program": "du",
+    "category": "coreutils",
+    "status": "failed",
+    "error": "Frozen base bitcode or checksum missing for du. Run coreutils_build_extract.sh --build-only and --extract-only first."
+  },
+  {
+    "program": "ln",
+    "category": "coreutils",
+    "status": "failed",
+    "error": "Frozen base bitcode or checksum missing for ln. Run coreutils_build_extract.sh --build-only and --extract-only first."
+  },
+  {
+    "program": "ls",
+    "category": "coreutils",
+    "status": "failed",
+    "error": "Frozen base bitcode or checksum missing for ls. Run coreutils_build_extract.sh --build-only and --extract-only first."
+  },
+  {
+    "program": "mkdir",
+    "category": "coreutils",
+    "status": "failed",
+    "error": "Frozen base bitcode or checksum missing for mkdir. Run coreutils_build_extract.sh --build-only and --extract-only first."
+  },
+  {
+    "program": "mv",
+    "category": "coreutils",
+    "status": "failed",
+    "error": "Frozen base bitcode or checksum missing for mv. Run coreutils_build_extract.sh --build-only and --extract-only first."
+  },
+  {
+    "program": "rm",
+    "category": "coreutils",
+    "status": "failed",
+    "error": "Frozen base bitcode or checksum missing for rm. Run coreutils_build_extract.sh --build-only and --extract-only first."
+  },
+  {
+    "program": "rmdir",
+    "category": "coreutils",
+    "status": "failed",
+    "error": "Frozen base bitcode or checksum missing for rmdir. Run coreutils_build_extract.sh --build-only and --extract-only first."
+  },
+  {
+    "program": "split",
+    "category": "coreutils",
+    "status": "failed",
+    "error": "Frozen base bitcode or checksum missing for split. Run coreutils_build_extract.sh --build-only and --extract-only first."
+  },
+  {
+    "program": "touch",
+    "category": "coreutils",
+    "status": "failed",
+    "error": "Frozen base bitcode or checksum missing for touch. Run coreutils_build_extract.sh --build-only and --extract-only first."
+  }
+]

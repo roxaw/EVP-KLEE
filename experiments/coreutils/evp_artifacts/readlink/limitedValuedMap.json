@@ -1,0 +1,42 @@
+{
+  "loc:70:branch:0": {
+    "condition": [
+      {
+        "type": 0,
+        "value": "0"
+      }
+    ]
+  },
+  "loc:392": {
+    "condition": [
+      {
+        "type": 0,
+        "value": "0"
+      },
+      {
+        "type": 0,
+        "value": "1"
+      }
+    ]
+  },
+  "loc:132": {
+    "condition": [
+      {
+        "type": 0,
+        "value": "0"
+      },
+      {
+        "type": 0,
+        "value": "1"
+      }
+    ]
+  },
+  "loc:70": {
+    "condition": [
+      {
+        "type": 0,
+        "value": "0"
+      }
+    ]
+  }
+}

@@ -1,0 +1,110 @@
+KLEE: NOTE: Using POSIX model: /home/roxana/klee-env/klee-source/klee/build/runtime/lib/libkleeRuntimePOSIX64_Debug+Asserts.bca
+KLEE: output directory is "/home/roxana/Downloads/klee-mm-benchmarks/coreutils/evp_artifacts/sort/./klee-out-4"
+KLEE: Using Z3 solver backend
+KLEE: WARNING: VASE map not set (--vase-map), VASE rewrites disabled.
+KLEE: VASE solver wrapper enabled (compile-time).
+KLEE: WARNING: undefined reference to function: __ctype_b_loc
+KLEE: WARNING: undefined reference to function: __ctype_get_mb_cur_max
+KLEE: WARNING: undefined reference to function: __fgetc_unlocked
+KLEE: WARNING: undefined reference to function: __fpending
+KLEE: WARNING: undefined reference to function: __fputc_unlocked
+KLEE: WARNING: undefined reference to function: __freading
+KLEE: WARNING: undefined reference to function: __sched_cpucount
+KLEE: WARNING: undefined reference to function: atexit
+KLEE: WARNING: undefined reference to function: clearerr_unlocked
+KLEE: WARNING: undefined reference to function: endutent
+KLEE: WARNING: undefined reference to function: explicit_bzero
+KLEE: WARNING: undefined reference to function: fclose
+KLEE: WARNING: undefined reference to function: fdopen
+KLEE: WARNING: undefined reference to function: feof_unlocked
+KLEE: WARNING: undefined reference to function: ferror
+KLEE: WARNING: undefined reference to function: ferror_unlocked
+KLEE: WARNING: undefined reference to function: fflush
+KLEE: WARNING: undefined reference to function: fflush_unlocked
+KLEE: WARNING: undefined reference to function: fgetc
+KLEE: WARNING: undefined reference to function: fileno
+KLEE: WARNING: undefined reference to function: fopen
+KLEE: WARNING: undefined reference to function: fprintf
+KLEE: WARNING: undefined reference to function: fputc_unlocked
+KLEE: WARNING: undefined reference to function: fputs
+KLEE: WARNING: undefined reference to function: fputs_unlocked
+KLEE: WARNING: undefined reference to function: fread_unlocked
+KLEE: WARNING: undefined reference to function: fseeko
+KLEE: WARNING: undefined reference to function: fwrite_unlocked
+KLEE: WARNING: undefined reference to function: getenv
+KLEE: WARNING: undefined reference to function: getopt_long
+KLEE: WARNING: undefined reference to function: getutent
+KLEE: WARNING: undefined reference to function: iswcntrl
+KLEE: WARNING: undefined reference to function: iswprint
+KLEE: WARNING: undefined reference to function: localeconv
+KLEE: WARNING: undefined reference to function: mbrtowc
+KLEE: WARNING: undefined reference to function: mbsinit
+KLEE: WARNING: undefined reference to function: memchr
+KLEE: WARNING: undefined reference to function: mkostemp
+KLEE: WARNING: undefined reference to function: mkstemp
+KLEE: WARNING: undefined reference to function: nl_langinfo
+KLEE: WARNING: undefined reference to variable: optarg
+KLEE: WARNING: undefined reference to variable: optind
+KLEE: WARNING: undefined reference to function: pipe2
+KLEE: WARNING: undefined reference to function: posix_fadvise
+KLEE: WARNING: undefined reference to function: printf
+KLEE: WARNING: undefined reference to variable: program_invocation_name
+KLEE: WARNING: undefined reference to variable: program_invocation_short_name
+KLEE: WARNING: undefined reference to function: pthread_cond_init
+KLEE: WARNING: undefined reference to function: pthread_cond_signal
+KLEE: WARNING: undefined reference to function: pthread_cond_wait
+KLEE: WARNING: undefined reference to function: pthread_create
+KLEE: WARNING: undefined reference to function: pthread_join
+KLEE: WARNING: undefined reference to function: pthread_mutex_init
+KLEE: WARNING: undefined reference to function: pthread_mutex_lock
+KLEE: WARNING: undefined reference to function: pthread_mutex_unlock
+KLEE: WARNING: undefined reference to function: pthread_sigmask
+KLEE: WARNING: undefined reference to function: putc_unlocked
+KLEE: WARNING: undefined reference to function: putchar_unlocked
+KLEE: WARNING: undefined reference to function: qsort
+KLEE: WARNING: undefined reference to function: realpath
+KLEE: WARNING: undefined reference to function: sched_getaffinity
+KLEE: WARNING: undefined reference to function: setlocale
+KLEE: WARNING: undefined reference to function: setutent
+KLEE: WARNING: undefined reference to function: setvbuf
+KLEE: WARNING: undefined reference to function: sigaddset
+KLEE: WARNING: undefined reference to function: sigemptyset
+KLEE: WARNING: undefined reference to function: sigismember
+KLEE: WARNING: undefined reference to function: signal
+KLEE: WARNING: undefined reference to variable: stderr
+KLEE: WARNING: undefined reference to variable: stdin
+KLEE: WARNING: undefined reference to variable: stdout
+KLEE: WARNING: undefined reference to function: stpcpy
+KLEE: WARNING: undefined reference to function: strchr
+KLEE: WARNING: undefined reference to function: strcmp
+KLEE: WARNING: undefined reference to function: strcoll
+KLEE: WARNING: undefined reference to function: strlen
+KLEE: WARNING: undefined reference to function: strncmp
+KLEE: WARNING: undefined reference to function: strrchr
+KLEE: WARNING: undefined reference to function: strtol
+KLEE: WARNING: undefined reference to function: strtold
+KLEE: WARNING: undefined reference to function: strtoul
+KLEE: WARNING: undefined reference to function: strtoumax
+KLEE: WARNING: undefined reference to function: strxfrm
+KLEE: WARNING: undefined reference to function: sysconf
+KLEE: WARNING: undefined reference to function: sysinfo
+KLEE: WARNING: undefined reference to function: toupper
+KLEE: WARNING: undefined reference to function: utmpname
+KLEE: WARNING: undefined reference to function: wcwidth
+KLEE: WARNING: undefined reference to function: error (UNSAFE)!
+KLEE: WARNING: undefined reference to function: raise (UNSAFE)!
+KLEE: WARNING ONCE: Alignment of memory from call "malloc" is not modelled. Using alignment of 8.
+KLEE: WARNING ONCE: calling external: syscall(4, 893329488, 873762752) at runtime/POSIX/fd.c:544 12
+KLEE: WARNING ONCE: calling __klee_posix_wrapped_main with extra arguments.
+KLEE: WARNING ONCE: calling external: getenv(885104352) at ../src/sort.c:4213 54
+KLEE: WARNING ONCE: calling external: strrchr(885103584, 47) at ../lib/progname.c:59 9
+KLEE: WARNING ONCE: calling external: setlocale(6, 892583008) at ../src/sort.c:4224 16
+KLEE: ERROR: ../src/sort.c:4224: external modified read-only object
+KLEE: NOTE: now ignoring this error at this location
+KLEE: ERROR: runtime/POSIX/fd.c:544: external modified read-only object
+KLEE: NOTE: now ignoring this error at this location
+
+KLEE: done: total instructions = 5756
+KLEE: done: completed paths = 0
+KLEE: done: partially completed paths = 2
+KLEE: done: generated tests = 2

@@ -1,58 +1,95 @@
-# OS/editor
-.DS_Store
-.idea/
-.vscode/
+# EVP-KLEE Project .gitignore
 
-# Python
-__pycache__/
-*.py[cod]
-*.pyo
-*.pyd
-*.egg-info/
-.eggs/
-.venv/
-venv/
-ENV/
-env/
-pip-wheel-metadata/
-
-# Logs/results/artifacts
-logs/
-results/
-artifacts/
-evp_artifacts/
-klee-out-*/
-klee-last/
-
-# Build + LLVM/KLEE byproducts
-build/
-obj/
-obj-llvm/
-CMakeFiles/
-CMakeCache.txt
-cmake-build-*/
-compile_commands.json
+# Build artifacts
 *.o
+*.bc
 *.so
 *.a
-*.bc
+*.exe
+*.dll
+*.dylib
+
+# LLVM/KLEE artifacts
 *.ll
-*.s
+*.bc
+*.ktest
+*.ktest-*
+*.klee-*
+*.err
 *.out
+
+# Coreutils build artifacts
+coreutils-8.31/obj-llvm/
+coreutils-8.31/*.o
+coreutils-8.31/src/*.o
+coreutils-8.31/lib/*.o
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+*.swp
+*.swo
+*~
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+*.pyo
+
+# IDE files
+.vscode/
+.idea/
+*.sublime-*
+.DS_Store
+Thumbs.db
+
+# Log files
+logs/
 *.log
 
-# Coverage
-.coverage
-htmlcov/
-coverage.xml
+# Test outputs
+test-logs/
+test-results/
 
-# Environment and secrets
-.env
-.env.*
-*.pem
-*.key
+# Large binary files
+*.tar.xz
+*.tar.gz
+*.zip
 
-# Misc
-*.swp
-*.tmp
+# KLEE output directories
+klee-*
+
+# Backup files
 *.bak
+*.backup
+*.orig
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# CMake build files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+
+# Specific to this project
+benchmarks/coreutils-8.31/obj-llvm/
+benchmarks/coreutils-8.31/*.o
+benchmarks/coreutils-8.31/src/*.o
+benchmarks/coreutils-8.31/lib/*.o
+
+# Keep important files
+!benchmarks/coreutils-8.31/configure
+!benchmarks/coreutils-8.31/Makefile.in
+!benchmarks/coreutils-8.31/README
+!benchmarks/coreutils-8.31/INSTALL
+!benchmarks/coreutils-8.31/COPYING
+!benchmarks/coreutils-8.31/AUTHORS
+!benchmarks/coreutils-8.31/NEWS
+!benchmarks/coreutils-8.31/ChangeLog

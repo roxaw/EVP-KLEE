@@ -1,0 +1,702 @@
+{
+  "loc:331:branch:1": {
+    "change_times": [
+      {
+        "type": 0,
+        "value": "0"
+      }
+    ]
+  },
+  "loc:331:branch:0": {
+    "change_times": [
+      {
+        "type": 0,
+        "value": "0"
+      }
+    ]
+  },
+  "loc:334:branch:0": {
+    "condition": [
+      {
+        "type": 0,
+        "value": "0"
+      }
+    ]
+  },
+  "loc:340:branch:0": {
+    "condition": [
+      {
+        "type": 0,
+        "value": "0"
+      }
+    ]
+  },
+  "loc:1823:branch:0": {
+    "condition": [
+      {
+        "type": 0,
+        "value": "0"
+      }
+    ]
+  },
+  "loc:1871:branch:0": {
+    "condition": [
+      {
+        "type": 0,
+        "value": "0"
+      }
+    ]
+  },
+  "loc:1870:branch:0": {
+    "condition": [
+      {
+        "type": 0,
+        "value": "0"
+      }
+    ]
+  },
+  "loc:1445:branch:1": {
+    "condition": [
+      {
+        "type": 0,
+        "value": "1"
+      }
+    ]
+  },
+  "loc:1440:branch:0": {
+    "condition": [
+      {
+        "type": 0,
+        "value": "0"
+      }
+    ]
+  },
+  "loc:1440:branch:1": {
+    "condition": [
+      {
+        "type": 0,
+        "value": "1"
+      }
+    ]
+  },
+  "loc:1442:branch:0": {
+    "condition": [
+      {
+        "type": 0,
+        "value": "0"
+      }
+    ],
+    "sign": [
+      {
+        "type": 0,
+        "value": "0"
+      }
+    ]
+  },
+  "loc:1442:branch:1": {
+    "condition": [
+      {
+        "type": 0,
+        "value": "1"
+      }
+    ]
+  },
+  "loc:392:branch:0": {
+    "condition": [
+      {
+        "type": 0,
+        "value": "0"
+      }
+    ]
+  },
+  "loc:392:branch:1": {
+    "condition": [
+      {
+        "type": 0,
+        "value": "1"
+      }
+    ]
+  },
+  "loc:420:branch:1": {
+    "condition": [
+      {
+        "type": 0,
+        "value": "1"
+      }
+    ]
+  },
+  "loc:420:branch:0": {
+    "condition": [
+      {
+        "type": 0,
+        "value": "0"
+      }
+    ]
+  },
+  "loc:428:branch:0": {
+    "optind": [
+      {
+        "type": 0,
+        "value": "1"
+      },
+      {
+        "type": 0,
+        "value": "3"
+      }
+    ],
+    "argc": [
+      {
+        "type": 0,
+        "value": "2"
+      },
+      {
+        "type": 0,
+        "value": "4"
+      },
+      {
+        "type": 0,
+        "value": "1024"
+      }
+    ]
+  },
+  "loc:434:branch:1": {
+    "argc": [
+      {
+        "type": 0,
+        "value": "2"
+      },
+      {
+        "type": 0,
+        "value": "4"
+      },
+      {
+        "type": 0,
+        "value": "1024"
+      }
+    ]
+  },
+  "loc:434:branch:0": {
+    "optind": [
+      {
+        "type": 0,
+        "value": "2"
+      },
+      {
+        "type": 0,
+        "value": "4"
+      },
+      {
+        "type": 0,
+        "value": "1024"
+      }
+    ],
+    "argc": [
+      {
+        "type": 0,
+        "value": "2"
+      },
+      {
+        "type": 0,
+        "value": "4"
+      },
+      {
+        "type": 0,
+        "value": "1024"
+      }
+    ]
+  },
+  "loc:132:branch:0": {
+    "condition": [
+      {
+        "type": 0,
+        "value": "0"
+      }
+    ]
+  },
+  "loc:132:branch:1": {
+    "condition": [
+      {
+        "type": 0,
+        "value": "1"
+      }
+    ]
+  },
+  "loc:36:branch:0": {
+    "fd": [
+      {
+        "type": 0,
+        "value": "3"
+      }
+    ],
+    "desired_fd": [
+      {
+        "type": 0,
+        "value": "0"
+      }
+    ]
+  },
+  "loc:36:branch:1": {
+    "fd": [
+      {
+        "type": 0,
+        "value": "0"
+      }
+    ],
+    "desired_fd": [
+      {
+        "type": 0,
+        "value": "0"
+      }
+    ]
+  },
+  "loc:142:branch:0": {
+    "fd": [
+      {
+        "type": 0,
+        "value": "0"
+      }
+    ]
+  },
+  "loc:146:branch:0": {
+    "change_times": [
+      {
+        "type": 0,
+        "value": "3"
+      }
+    ]
+  },
+  "loc:158:branch:0": {
+    "condition": [
+      {
+        "type": 0,
+        "value": "0"
+      }
+    ]
+  },
+  "loc:158:branch:1": {
+    "condition": [
+      {
+        "type": 0,
+        "value": "1"
+      }
+    ]
+  },
+  "loc:165:branch:0": {
+    "fd": [
+      {
+        "type": 0,
+        "value": "0"
+      }
+    ]
+  },
+  "loc:166:branch:0": {
+    "condition": [
+      {
+        "type": 0,
+        "value": "0"
+      }
+    ]
+  },
+  "loc:47:branch:1": {
+    "fd": [
+      {
+        "type": 0,
+        "value": "0"
+      }
+    ]
+  },
+  "loc:47:branch:0": {
+    "fd": [
+      {
+        "type": 0,
+        "value": "0"
+      }
+    ]
+  },
+  "loc:49:branch:0": {
+    "fd": [
+      {
+        "type": 0,
+        "value": "0"
+      }
+    ]
+  },
+  "loc:51:branch:0": {
+    "result": [
+      {
+        "type": 0,
+        "value": "0"
+      }
+    ]
+  },
+  "loc:169:branch:1": {
+    "fd": [
+      {
+        "type": 0,
+        "value": "0"
+      }
+    ]
+  },
+  "loc:184:branch:1": {
+    "condition": [
+      {
+        "type": 0,
+        "value": "1"
+      }
+    ]
+  },
+  "loc:66:branch:0": {
+    "fd": [
+      {
+        "type": 0,
+        "value": "1"
+      },
+      {
+        "type": 0,
+        "value": "2"
+      }
+    ]
+  },
+  "loc:105:branch:0": {
+    "saved_errno": [
+      {
+        "type": 0,
+        "value": "0"
+      }
+    ]
+  },
+  "loc:70:branch:0": {
+    "condition": [
+      {
+        "type": 0,
+        "value": "0"
+      }
+    ]
+  },
+  "loc:422:branch:1": {
+    "change_times": [
+      {
+        "type": 0,
+        "value": "3"
+      }
+    ]
+  },
+  "loc:331": {
+    "change_times": [
+      {
+        "type": 0,
+        "value": "0"
+      }
+    ]
+  },
+  "loc:334": {
+    "condition": [
+      {
+        "type": 0,
+        "value": "0"
+      }
+    ]
+  },
+  "loc:340": {
+    "condition": [
+      {
+        "type": 0,
+        "value": "0"
+      }
+    ]
+  },
+  "loc:1823": {
+    "condition": [
+      {
+        "type": 0,
+        "value": "0"
+      },
+      {
+        "type": 0,
+        "value": "1"
+      }
+    ]
+  },
+  "loc:1871": {
+    "condition": [
+      {
+        "type": 0,
+        "value": "0"
+      },
+      {
+        "type": 0,
+        "value": "1"
+      }
+    ]
+  },
+  "loc:1870": {
+    "condition": [
+      {
+        "type": 0,
+        "value": "0"
+      },
+      {
+        "type": 0,
+        "value": "1"
+      }
+    ]
+  },
+  "loc:1445": {
+    "condition": [
+      {
+        "type": 0,
+        "value": "0"
+      },
+      {
+        "type": 0,
+        "value": "1"
+      }
+    ]
+  },
+  "loc:1440": {
+    "condition": [
+      {
+        "type": 0,
+        "value": "0"
+      },
+      {
+        "type": 0,
+        "value": "1"
+      }
+    ]
+  },
+  "loc:1442": {
+    "condition": [
+      {
+        "type": 0,
+        "value": "0"
+      },
+      {
+        "type": 0,
+        "value": "1"
+      }
+    ],
+    "sign": [
+      {
+        "type": 0,
+        "value": "0"
+      }
+    ]
+  },
+  "loc:392": {
+    "condition": [
+      {
+        "type": 0,
+        "value": "0"
+      },
+      {
+        "type": 0,
+        "value": "1"
+      }
+    ]
+  },
+  "loc:420": {
+    "condition": [
+      {
+        "type": 0,
+        "value": "0"
+      },
+      {
+        "type": 0,
+        "value": "1"
+      }
+    ]
+  },
+  "loc:428": {
+    "optind": [
+      {
+        "type": 0,
+        "value": "1"
+      },
+      {
+        "type": 0,
+        "value": "3"
+      }
+    ],
+    "argc": [
+      {
+        "type": 0,
+        "value": "2"
+      },
+      {
+        "type": 0,
+        "value": "4"
+      },
+      {
+        "type": 0,
+        "value": "1024"
+      }
+    ]
+  },
+  "loc:434": {
+    "argc": [
+      {
+        "type": 0,
+        "value": "2"
+      },
+      {
+        "type": 0,
+        "value": "4"
+      },
+      {
+        "type": 0,
+        "value": "1024"
+      }
+    ]
+  },
+  "loc:132": {
+    "condition": [
+      {
+        "type": 0,
+        "value": "0"
+      },
+      {
+        "type": 0,
+        "value": "1"
+      }
+    ]
+  },
+  "loc:36": {
+    "fd": [
+      {
+        "type": 0,
+        "value": "0"
+      },
+      {
+        "type": 0,
+        "value": "3"
+      }
+    ],
+    "desired_fd": [
+      {
+        "type": 0,
+        "value": "0"
+      }
+    ]
+  },
+  "loc:142": {
+    "fd": [
+      {
+        "type": 0,
+        "value": "0"
+      }
+    ]
+  },
+  "loc:146": {
+    "change_times": [
+      {
+        "type": 0,
+        "value": "3"
+      }
+    ]
+  },
+  "loc:158": {
+    "condition": [
+      {
+        "type": 0,
+        "value": "0"
+      },
+      {
+        "type": 0,
+        "value": "1"
+      }
+    ]
+  },
+  "loc:165": {
+    "fd": [
+      {
+        "type": 0,
+        "value": "0"
+      }
+    ]
+  },
+  "loc:166": {
+    "condition": [
+      {
+        "type": 0,
+        "value": "0"
+      }
+    ]
+  },
+  "loc:47": {
+    "fd": [
+      {
+        "type": 0,
+        "value": "0"
+      }
+    ]
+  },
+  "loc:49": {
+    "fd": [
+      {
+        "type": 0,
+        "value": "0"
+      }
+    ]
+  },
+  "loc:51": {
+    "result": [
+      {
+        "type": 0,
+        "value": "0"
+      }
+    ]
+  },
+  "loc:169": {
+    "fd": [
+      {
+        "type": 0,
+        "value": "0"
+      }
+    ]
+  },
+  "loc:184": {
+    "condition": [
+      {
+        "type": 0,
+        "value": "1"
+      }
+    ]
+  },
+  "loc:66": {
+    "fd": [
+      {
+        "type": 0,
+        "value": "1"
+      },
+      {
+        "type": 0,
+        "value": "2"
+      }
+    ]
+  },
+  "loc:105": {
+    "saved_errno": [
+      {
+        "type": 0,
+        "value": "0"
+      }
+    ]
+  },
+  "loc:70": {
+    "condition": [
+      {
+        "type": 0,
+        "value": "0"
+      }
+    ]
+  },
+  "loc:422": {
+    "change_times": [
+      {
+        "type": 0,
+        "value": "3"
+      }
+    ]
+  }
+}

@@ -21,12 +21,13 @@ class EVPPipeline:
             "OPT": os.environ.get("OPT", "/usr/lib/llvm-10/bin/opt"),
             "LLVMLINK": os.environ.get("LLVMLINK", "/usr/lib/llvm-10/bin/llvm-link"),
             "KLEE_BIN": os.environ.get("KLEE_BIN", "/home/roxana/klee-env/klee-source/klee/build/bin/klee"),
-            "PASS_SO": os.environ.get("PASS_SO", str(project_root / "vasepass" / "libVaseInstrumentPass.so")),
-            "LOGGER_C": os.environ.get("LOGGER_C", str(project_root / "logger.c")),
+            "PASS_SO": os.environ.get("PASS_SO", str(project_root / "automated_demo" / "tools" / "vasepass" / "libVaseInstrumentPass.so")),
+            "LOGGER_C": os.environ.get("LOGGER_C", str(project_root / "automated_demo" / "tools" / "logger" / "logger.c")),
             "ROOT": os.environ.get("ROOT", str(project_root / "benchmarks")),
         }
         
-        self.artifacts_dir = Path(self.env["ROOT"]) / "evp_artifacts"
+        # Use automated_demo/benchmarks/evp_artifacts as the single artifacts directory
+        self.artifacts_dir = Path(__file__).parent / "benchmarks" / "evp_artifacts"
         self.artifacts_dir.mkdir(parents=True, exist_ok=True)
         
         # Initialize KLEE runner
@@ -49,38 +50,9 @@ class EVPPipeline:
         prog_dir = self.artifacts_dir / category / program
         prog_dir.mkdir(parents=True, exist_ok=True)
         
-        # For coreutils, consume frozen base bitcode (built/extracted once), verify checksum, then copy
+        # For coreutils, perform full bitcode extraction and instrumentation
         if category == "coreutils":
-            # Use frozen base bitcode under automated_demo/benchmarks/evp_artifacts/frozen
-            freeze_dir = Path(__file__).parent / "benchmarks" / "evp_artifacts" / "frozen"
-            frozen_bc = freeze_dir / f"{program}.base.bc"
-            checksum_file = freeze_dir / f"{program}.base.bc.sha256"
-            if not frozen_bc.exists() or not checksum_file.exists():
-                raise RuntimeError(
-                    f"Frozen base bitcode or checksum missing for {program}. Run coreutils_build_extract.sh --build-only and --extract-only first."
-                )
-            # Validate checksum
-            import hashlib
-            h = hashlib.sha256()
-            with open(frozen_bc, 'rb') as fb:
-                for chunk in iter(lambda: fb.read(1024 * 1024), b''):
-                    h.update(chunk)
-            computed = h.hexdigest()
-            with open(checksum_file, 'r') as cf:
-                recorded = cf.read().strip().split()[0]
-            if computed != recorded:
-                raise RuntimeError(
-                    f"Checksum mismatch for {program}.base.bc (computed {computed}, recorded {recorded})."
-                )
-            # Copy into program artifacts dir for instrumentation
-            dst_bc = prog_dir / f"{program}.base.bc"
-            try:
-                import shutil
-                shutil.copy2(frozen_bc, dst_bc)
-                print(f"[OK] Using frozen base bitcode -> {dst_bc}")
-            except Exception as e:
-                raise RuntimeError(f"Failed to copy frozen base bitcode: {e}")
-            return prog_dir
+            return self._phase1_coreutils(program, prog_dir)
         
         # For other programs, adapt the process
         base_bc = prog_dir / f"{program}.base.bc"
@@ -120,6 +92,151 @@ class EVPPipeline:
         
         print(f"[OK] Instrumented {program} -> {final_exe}")
         return prog_dir
+    
+    def _phase1_coreutils(self, program, prog_dir):
+        """Phase 1 implementation for coreutils utilities"""
+        print(f"[PHASE 1] Processing coreutils utility: {program}")
+        
+        # Paths
+        project_root = Path(__file__).parent.parent.resolve()
+        cu_dir = project_root / "benchmarks" / "coreutils-8.31"
+        obj_src = cu_dir / "obj-llvm" / "src"
+        inst_dir = cu_dir / "obj-llvm" / "instrumented"
+        
+        # Create instrumented directory
+        inst_dir.mkdir(parents=True, exist_ok=True)
+        
+        # Validate coreutils build exists
+        if not obj_src.exists():
+            raise RuntimeError(f"Coreutils build not found: {obj_src}")
+        
+        # Check if utility binary exists
+        util_binary = obj_src / program
+        if not util_binary.exists() or not util_binary.is_file():
+            raise RuntimeError(f"Utility binary not found: {util_binary}")
+        
+        print(f"[STEP 1] Extracting bitcode for {program}...")
+        
+        # Step 1: Extract bitcode
+        base_bc = prog_dir / f"{program}.base.bc"
+        if base_bc.exists():
+            print(f"[SKIP] Using existing bitcode: {base_bc}")
+        else:
+            # Change to obj-llvm/src directory for extract-bc
+            old_cwd = os.getcwd()
+            try:
+                os.chdir(obj_src)
+                cmd = f"extract-bc -o {base_bc} ./{program}"
+                result = self.run_command(cmd)
+                if result.returncode != 0:
+                    raise RuntimeError(f"Bitcode extraction failed: {result.stderr}")
+            finally:
+                os.chdir(old_cwd)
+            
+            # Generate checksum
+            import hashlib
+            h = hashlib.sha256()
+            with open(base_bc, 'rb') as f:
+                for chunk in iter(lambda: f.read(1024 * 1024), b''):
+                    h.update(chunk)
+            with open(f"{base_bc}.sha256", 'w') as f:
+                f.write(f"{h.hexdigest()}  {base_bc.name}\n")
+            
+            print(f"[OK] Bitcode extracted: {base_bc}")
+        
+        # Step 2: Instrument bitcode
+        print(f"[STEP 2] Instrumenting bitcode with VASE pass...")
+        instr_bc = prog_dir / f"{program}.evpinstr.bc"
+        cmd = f'{self.env["OPT"]} -load {self.env["PASS_SO"]} -vase-instrument {base_bc} -o {instr_bc}'
+        result = self.run_command(cmd)
+        if result.returncode != 0:
+            raise RuntimeError(f"Bitcode instrumentation failed: {result.stderr}")
+        print(f"[OK] Bitcode instrumented: {instr_bc}")
+        
+        # Step 3: Build logger
+        print(f"[STEP 3] Building logger runtime...")
+        logger_bc = prog_dir / "logger.bc"
+        cmd = f'{self.env["CLANG"]} -O0 -emit-llvm -c {self.env["LOGGER_C"]} -o {logger_bc}'
+        result = self.run_command(cmd)
+        if result.returncode != 0:
+            raise RuntimeError(f"Logger build failed: {result.stderr}")
+        print(f"[OK] Logger built: {logger_bc}")
+        
+        # Step 4: Link instrumented bitcode with logger
+        print(f"[STEP 4] Linking instrumented bitcode with logger...")
+        final_bc = prog_dir / f"{program}_final.bc"
+        cmd = f'{self.env["LLVMLINK"]} {instr_bc} {logger_bc} -o {final_bc}'
+        result = self.run_command(cmd)
+        if result.returncode != 0:
+            raise RuntimeError(f"Bitcode linking failed: {result.stderr}")
+        print(f"[OK] Final bitcode linked: {final_bc}")
+        
+        # Step 5: Build final executable
+        print(f"[STEP 5] Building final executable...")
+        final_exe = prog_dir / f"{program}_final_exe"
+        # Use coreutils-specific libraries including ACL support
+        libs = "-ldl -lpthread -lselinux -lcap -lacl -lattr"
+        cmd = f'{self.env["CLANG"]} {final_bc} -o {final_exe} {libs}'
+        result = self.run_command(cmd)
+        if result.returncode != 0:
+            raise RuntimeError(f"Executable build failed: {result.stderr}")
+        print(f"[OK] Final executable built: {final_exe}")
+        
+        # Step 6: Stage executable for testing
+        staged_exe = inst_dir / f"{program}_final_exe"
+        import shutil
+        shutil.copy2(final_exe, staged_exe)
+        print(f"[OK] Executable staged: {staged_exe}")
+        
+        # Step 7: Create symlink for testing (backup original if exists)
+        util_symlink = obj_src / program
+        if util_symlink.is_symlink():
+            util_symlink.unlink()
+        elif util_symlink.exists():
+            backup_path = obj_src / f"{program}.original"
+            if not backup_path.exists():
+                shutil.move(str(util_symlink), str(backup_path))
+                print(f"[INFO] Original binary backed up: {backup_path}")
+        
+        # Create symlink to instrumented version
+        util_symlink.symlink_to(staged_exe)
+        print(f"[OK] Symlink created: {util_symlink} -> {staged_exe}")
+        
+        # Validation
+        self._validate_phase1_outputs(prog_dir, program)
+        
+        print(f"[PHASE 1 COMPLETE] {program} instrumented successfully")
+        return prog_dir
+    
+    def _validate_phase1_outputs(self, prog_dir, program):
+        """Validate Phase 1 outputs"""
+        print(f"[VALIDATE] Checking Phase 1 outputs for {program}")
+        
+        required_files = [
+            f"{program}.base.bc",
+            f"{program}.base.bc.sha256", 
+            f"{program}.evpinstr.bc",
+            "logger.bc",
+            f"{program}_final.bc",
+            f"{program}_final_exe"
+        ]
+        
+        for file in required_files:
+            file_path = prog_dir / file
+            if not file_path.exists():
+                raise RuntimeError(f"Missing required file: {file_path}")
+            
+            if file_path.stat().st_size == 0:
+                raise RuntimeError(f"Empty file: {file_path}")
+            
+            print(f"[OK] {file} exists ({file_path.stat().st_size} bytes)")
+        
+        # Test executable
+        exe_path = prog_dir / f"{program}_final_exe"
+        if not exe_path.is_file() or not os.access(exe_path, os.X_OK):
+            raise RuntimeError(f"Executable not found or not executable: {exe_path}")
+        
+        print(f"[OK] Phase 1 validation passed for {program}")
     
     def phase2_profile(self, category, program, prog_dir):
         """Phase 2: Run tests and collect values"""
@@ -181,6 +298,9 @@ class EVPPipeline:
         # Validate value log collection
         self.validate_value_log(vase_log, program)
         
+        # Ensure vase_value_log.txt is in the correct location
+        self.ensure_vase_log_in_artifacts(program, prog_dir, vase_log)
+        
         # Generate map
         thresholds = cfg["thresholds"]
         map_file = prog_dir / "limitedValuedMap.json"
@@ -224,6 +344,31 @@ class EVPPipeline:
         
         print(f"[OK] Value log validated: {vase_log} ({log_size} bytes)")
         return True
+    
+    def ensure_vase_log_in_artifacts(self, program, prog_dir, vase_log):
+        """Ensure vase_value_log.txt is in the correct artifacts directory"""
+        print(f"[COPY] Ensuring vase_value_log.txt is in artifacts directory for {program}")
+        
+        # The log should already be in the correct location (prog_dir)
+        # But let's verify and copy if needed
+        target_log = prog_dir / "vase_value_log.txt"
+        
+        if vase_log != target_log and vase_log.exists():
+            # Copy from current location to target location
+            import shutil
+            shutil.copy2(vase_log, target_log)
+            print(f"[OK] Copied vase_value_log.txt to {target_log}")
+        elif target_log.exists():
+            print(f"[OK] vase_value_log.txt already in correct location: {target_log}")
+        else:
+            print(f"[WARNING] vase_value_log.txt not found in expected location: {target_log}")
+        
+        # Verify the file exists and is accessible
+        if target_log.exists():
+            log_size = target_log.stat().st_size
+            print(f"[OK] vase_value_log.txt confirmed in artifacts: {target_log} ({log_size} bytes)")
+        else:
+            print(f"[ERROR] vase_value_log.txt not found in artifacts directory: {target_log}")
     
     def phase3_evaluate(self, category, program, prog_dir, map_file):
         """Phase 3: Run comprehensive KLEE evaluation with parallel execution"""
