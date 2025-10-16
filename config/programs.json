@@ -1,0 +1,7 @@
+{
+  "coreutils": {
+    "type": "cli",
+    "programs": ["cp", "chmod", "dd", "df", "du", "ln", "ls", "mkdir", "mv", "rm"],
+    "thresholds": {"min_occurrence": 3, "max_values": 5}
+  }
+}
