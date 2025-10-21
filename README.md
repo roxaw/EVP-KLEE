@@ -42,7 +42,6 @@ EVP-KLEE/
 └── colab_integration/    # Google Colab integration
     ├── evp_colab_demo.ipynb
     ├── upload_to_drive.py
-    └── cursor_integration_guide.md
 ```
 
 ## Setup environment
