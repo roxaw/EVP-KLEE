@@ -1,118 +1,156 @@
-# EVP-KLEE: Enhanced Value Profiling with KLEE
+# EVP-KLEE: Enhanced Value Profiling for KLEE
 
-A comprehensive pipeline for automated value profiling and symbolic execution analysis of coreutils utilities using KLEE.
+EVP-KLEE is an automated symbolic execution pipeline that enhances KLEE with value profiling capabilities for improved performance and coverage analysis.
 
-## 🎯 Overview
+## 🚀 Quick Start with GitHub Codespace
 
-This project implements an Enhanced Value Profiling (EVP) pipeline that combines value profiling with KLEE symbolic execution to analyze coreutils utilities. The pipeline consists of three main phases:
+The easiest way to get started with EVP-KLEE is using GitHub Codespace:
 
-1. **Phase 1 (Instrumentation)**: Extract bitcode, instrument with VASE pass, and build executables
-2. **Phase 2 (Profiling)**: Run tests and collect value information
-3. **Phase 3 (Evaluation)**: Perform symbolic execution with KLEE
+1. **Open in Codespace**: Click the "Code" button and select "Codespaces" → "Create codespace on main"
+2. **Wait for setup**: The Codespace will automatically build the complete environment
+3. **Verify installation**: Run `bash scripts/verify_environment.sh` to check everything is working
+4. **Start developing**: The environment is ready to use!
 
-## ✅ Current Status
+### What's Included in the Codespace
 
-- ✅ **Phase 1 Complete**: Full instrumentation pipeline with batch processing
-- 🔄 **Phase 2 In Progress**: Profiling and value collection
-- 🔄 **Phase 3 Planned**: KLEE symbolic execution integration
+- **Ubuntu 20.04** base environment
+- **LLVM 10** and **Clang 10** with debug support
+- **KLEE v2.3** with uClibc and POSIX runtime
+- **STP** and **Z3** solvers
+- **Python 3** with virtual environment
+- **wllvm** for whole-program LLVM bitcode extraction
+- **Complete development tools** (VS Code extensions, Git LFS, etc.)
 
-## 🚀 Quick Start
+## 🌐 Google Colab Integration
 
-### Prerequisites
+For cloud-based development without local disk space constraints:
 
-- LLVM 10
-- Clang 10
-- KLEE v2.3
-- WLLVM
-- Python 3.6+
-- Coreutils 8.31
+1. **Upload to Google Drive**: Use the provided upload script
+2. **Open in Colab**: Upload `colab_integration/evp_colab_demo.ipynb`
+3. **Run the demo**: Execute the complete EVP-KLEE pipeline in the cloud
+4. **Cursor IDE Integration**: Download the notebook and open in Cursor for AI assistance
 
-### Installation
-
-1. Clone the repository:
-```bash
-git clone https://github.com/YOUR_USERNAME/EVP-KLEE.git
-cd EVP-KLEE
-```
-
-2. Build coreutils with LLVM support:
-```bash
-cd benchmarks/coreutils-8.31
-./configure CC=wllvm CFLAGS="-g"
-make
-cd obj-llvm/src
-extract-bc -o utility.bc ./utility
-```
-
-3. Run Phase 1 (Instrumentation):
-```bash
-cd automated_demo
-python3 test_phase1_small_batch.py  # Test with 3 utilities
-python3 run_phase1_batch.py         # Process all utilities
-```
+See `colab_integration/cursor_integration_guide.md` for detailed setup instructions.
 
 ## 📁 Project Structure
 
 ```
 EVP-KLEE/
-├── automated_demo/                 # Main pipeline directory
-│   ├── benchmarks/
-│   │   └── evp_artifacts/         # Generated artifacts
-│   │       └── coreutils/         # Per-utility artifacts
-│   ├── tools/
-│   │   ├── vasepass/              # VASE instrumentation pass
-│   │   └── logger/                # Logger runtime
-│   ├── config/
-│   │   └── programs.json          # Utility configurations
-│   ├── evp_pipeline.py            # Main pipeline
-│   ├── test_phase1_small_batch.py # Small batch testing
-│   ├── run_phase1_batch.py        # Full batch processing
-│   └── [management scripts...]
-├── benchmarks/
-│   └── coreutils-8.31/            # Coreutils source and build
-└── experiments/                    # Experimental scripts
+├── klee/                 # KLEE v2.3 source code
+├── benchmarks/           # Test programs and benchmarks
+│   ├── coreutils/        # Coreutils benchmarks
+│   ├── busybox/          # BusyBox benchmarks
+│   ├── apr/              # APR benchmarks
+│   ├── m4/               # M4 benchmarks
+│   └── custom/           # Custom benchmarks
+├── scripts/              # Setup and automation scripts
+├── experiments/          # Experiment configurations and results
+├── docs/                 # Project documentation
+├── results/              # Analysis results and statistics
+├── build/                # KLEE build output
+├── automated_demo/       # EVP pipeline demo scripts
+│   ├── config/           # Configuration files
+│   ├── drivers/          # Driver programs
+│   └── logs/             # Log files
+└── colab_integration/    # Google Colab integration
+    ├── evp_colab_demo.ipynb
+    ├── upload_to_drive.py
+    └── cursor_integration_guide.md
 ```
 
-## 🔧 Usage
+## 🛠️ Manual Setup (Alternative to Codespace)
 
-### Phase 1: Instrumentation
+If you prefer to set up the environment manually:
 
-```bash
-# Test with small batch (echo, ls, cp)
-python3 test_phase1_small_batch.py
+### Prerequisites
 
-# Process all coreutils utilities
-python3 run_phase1_batch.py
+- Ubuntu 20.04 or compatible Linux distribution
+- Git, CMake, build-essential
+- Python 3.8+
 
-# Check artifacts structure
-python3 check_artifacts_structure.py
-```
+### Installation Steps
 
-### Individual Utility Processing
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/roxaw/evp-klee-artifact.git
+   cd evp-klee-artifact
+   ```
 
-```bash
-# Process single utility
-python3 evp_pipeline.py --phase1 echo
+2. **Run the setup script**:
+   ```bash
+   bash scripts/startup_evp_klee.sh
+   ```
 
-# Run complete pipeline for single utility
-python3 evp_pipeline.py --all echo
+3. **Build KLEE** (if not using Codespace):
+   ```bash
+   bash scripts/build_klee.sh
+   ```
+
+4. **Verify the environment**:
+   ```bash
+   bash scripts/verify_environment.sh
+   ```
+
+## 🎯 Usage
+
+### Running the EVP Pipeline
+
+1. **Basic usage**:
+   ```bash
+   cd automated_demo
+   python3 evp_pipeline.py
+   ```
+
+2. **Process specific category**:
+   ```bash
+   python3 evp_pipeline.py coreutils
+   ```
+
+3. **Run with custom configuration**:
+   ```bash
+   python3 evp_pipeline.py --config config/custom_programs.json
+   ```
+
+### Available Scripts
+
+- `scripts/startup_evp_klee.sh` - Initialize the development environment
+- `scripts/build_klee.sh` - Build KLEE v2.3 from source
+- `scripts/verify_environment.sh` - Verify all tools are installed correctly
+- `scripts/setup_git.sh` - Configure Git with LFS support
+- `scripts/setup_directories.sh` - Create workspace directory structure
+
+## 🔧 Configuration
+
+The EVP pipeline uses JSON configuration files to define programs and their properties:
+
+```json
+{
+  "coreutils": {
+    "type": "cli",
+    "programs": ["cp", "chmod", "dd", "df", "du", "ln", "ls", "mkdir", "mv", "rm"],
+    "thresholds": {"min_occurrence": 3, "max_values": 5}
+  }
+}
 ```
 
 ## 📊 Features
 
-### Phase 1 (Instrumentation)
-- **Automated Bitcode Extraction**: Extract LLVM bitcode from coreutils binaries
-- **VASE Instrumentation**: Apply VASE pass for value profiling
-- **Logger Integration**: Build and link logger runtime
-- **Library Support**: Full ACL and attribute library support
-- **Batch Processing**: Process multiple utilities automatically
-- **Validation**: Comprehensive validation at each step
+- **Automated Instrumentation**: Phase 1 integration with VASE pass
+- **Batch Processing**: Process multiple programs efficiently
+- **Value Profiling**: Enhanced value analysis for KLEE
+- **Comprehensive Logging**: Detailed execution logs and statistics
+- **Validation Framework**: Automated testing and validation
+- **Artifact Management**: Organized output structure
+- **Cloud Integration**: Google Colab support for cloud development
+- **AI Assistance**: Cursor IDE integration for enhanced development
 
-### Management Tools
-- **Log Management**: Copy and organize vase_value_log.txt files
-- **Structure Validation**: Check artifacts directory structure
-- **Error Handling**: Detailed error reporting and recovery
-- **Progress Tracking**: Real-time progress monitoring
+## 🎯 Current Status
+
+- ✅ **Phase 1 Complete**: Full instrumentation pipeline with batch processing
+- ✅ **Google Colab Integration**: Cloud-based development environment
+- ✅ **Documentation**: Comprehensive setup and usage guides
+- 🔄 **Phase 2 In Progress**: Profiling and value collection
+- 🔄 **Phase 3 Planned**: KLEE symbolic execution integration
 
 ## 🛠️ Technical Details
 
@@ -122,25 +160,13 @@ python3 evp_pipeline.py --all echo
 - **KLEE v2.3**: Symbolic execution engine
 - **WLLVM**: Whole-program LLVM compilation
 - **VASE Pass**: Custom instrumentation pass
+- **STP & Z3**: SMT solvers
 
-### Supported Utilities
-- echo, ls, cp, chmod, mkdir, rm, mv, dd, df, du, ln, split, touch, rmdir
-
-### Artifacts Generated
-For each utility, the pipeline generates:
-- `utility.base.bc`: Original bitcode
-- `utility.evpinstr.bc`: Instrumented bitcode
-- `logger.bc`: Logger runtime
-- `utility_final.bc`: Linked bitcode
-- `utility_final_exe`: Final executable
-- `vase_value_log.txt`: Value profiling data (Phase 2)
-
-## 📈 Performance
-
-- **Batch Processing**: Process 13+ utilities in parallel
-- **Validation**: Multi-level validation at each step
-- **Error Recovery**: Robust error handling and reporting
-- **Memory Efficient**: Optimized for large-scale processing
+### Supported Programs
+- **Coreutils**: cp, chmod, dd, df, du, ln, ls, mkdir, mv, rm, rmdir, split, touch
+- **BusyBox**: echo, cat, ls, mkdir, rm
+- **APR**: apr_test
+- **M4**: m4
 
 ## 🤝 Contributing
 
@@ -158,7 +184,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 For questions or issues:
 - Create an issue on GitHub
-- Contact: [Your Contact Information]
+- Check the troubleshooting guide in `docs/TROUBLESHOOTING.md`
 
 ## 🎯 Roadmap
 
@@ -166,10 +192,10 @@ For questions or issues:
 - [ ] Phase 3 (KLEE Evaluation) integration
 - [ ] Performance optimization
 - [ ] Additional utility support
-- [ ] Comprehensive documentation
+- [ ] Enhanced cloud integration features
 
 ---
 
-**Last Updated**: January 16, 2025  
-**Version**: 1.0.0  
-**Status**: Phase 1 Complete
+**Last Updated**: January 21, 2025  
+**Version**: 2.0.0  
+**Status**: Phase 1 Complete + Cloud Integration

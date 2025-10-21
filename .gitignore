@@ -92,4 +92,5 @@ benchmarks/coreutils-8.31/lib/*.o
 !benchmarks/coreutils-8.31/COPYING
 !benchmarks/coreutils-8.31/AUTHORS
 !benchmarks/coreutils-8.31/NEWS
-!benchmarks/coreutils-8.31/ChangeLog
+!benchmarks/coreutils-8.31/ChangeLog*.txt
+experiments/coreutils/coreutils-8.31/obj-llvm/
