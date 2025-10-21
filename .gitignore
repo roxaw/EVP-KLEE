@@ -94,3 +94,4 @@ benchmarks/coreutils-8.31/lib/*.o
 !benchmarks/coreutils-8.31/NEWS
 !benchmarks/coreutils-8.31/ChangeLog*.txt
 experiments/coreutils/coreutils-8.31/obj-llvm/
+sync_github.sh
