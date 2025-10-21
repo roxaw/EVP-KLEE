@@ -1,5 +1,4 @@
-# EVP-KLEE: Enhanced Value Profiling for KLEE
-
+# EVP-KLEE Project
 EVP-KLEE is an automated symbolic execution pipeline that enhances KLEE with value profiling capabilities for improved performance and coverage analysis.
 
 - **Ubuntu 20.04** base environment
