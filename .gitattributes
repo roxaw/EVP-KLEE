@@ -1,0 +1,40 @@
+# Git LFS configuration for EVP-KLEE project
+# Large binary files that should be tracked with Git LFS
+
+# LLVM bitcode files
+*.bc filter=lfs diff=lfs merge=lfs -text
+
+# Object files
+*.o filter=lfs diff=lfs merge=lfs -text
+
+# KLEE output directories
+klee-out-*/** filter=lfs diff=lfs merge=lfs -text
+
+# Build artifacts
+build/** filter=lfs diff=lfs merge=lfs -text
+
+# Results and logs
+results/** filter=lfs diff=lfs merge=lfs -text
+logs/** filter=lfs diff=lfs merge=lfs -text
+
+# EVP artifacts
+evp_artifacts/** filter=lfs diff=lfs merge=lfs -text
+
+# Large data files
+*.tar.gz filter=lfs diff=lfs merge=lfs -text
+*.zip filter=lfs diff=lfs merge=lfs -text
+
+# KLEE test files
+*.ktest filter=lfs diff=lfs merge=lfs -text
+
+# Solver output files
+*.smt2 filter=lfs diff=lfs merge=lfs -text
+*.smt filter=lfs diff=lfs merge=lfs -text
+
+# Benchmark data
+benchmarks/**/*.bc filter=lfs diff=lfs merge=lfs -text
+benchmarks/**/*.o filter=lfs diff=lfs merge=lfs -text
+
+# Experiment results
+experiments/**/results/** filter=lfs diff=lfs merge=lfs -text
+experiments/**/klee-out-*/** filter=lfs diff=lfs merge=lfs -text

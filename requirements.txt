@@ -1,0 +1,56 @@
+# EVP-KLEE Python Dependencies
+# Core dependencies for the EVP-KLEE symbolic execution pipeline
+
+# Testing framework
+pytest>=7.0.0
+pytest-cov>=4.0.0
+
+# Path handling (Python 3.4+ has pathlib built-in, but keeping for compatibility)
+pathlib2>=2.3.7; python_version < "3.4"
+
+# JSON handling (built-in in Python 3.2+, but keeping for compatibility)
+json5>=0.9.0
+
+# Subprocess handling (built-in in Python 3.2+, but keeping for compatibility)
+subprocess32>=3.5.4; python_version < "3.2"
+
+# Data processing and analysis
+numpy>=1.21.0
+pandas>=1.3.0
+matplotlib>=3.5.0
+seaborn>=0.11.0
+
+# File and system utilities
+psutil>=5.8.0
+tqdm>=4.62.0
+
+# Configuration management
+pyyaml>=6.0
+toml>=0.10.2
+
+# Logging and debugging
+colorlog>=6.6.0
+rich>=12.0.0
+
+# Development tools
+black>=22.0.0
+flake8>=4.0.0
+mypy>=0.950
+
+# Documentation
+sphinx>=4.5.0
+sphinx-rtd-theme>=1.0.0
+
+# Optional: Jupyter notebook support
+jupyter>=1.0.0
+ipykernel>=6.0.0
+
+# Optional: Performance profiling
+memory-profiler>=0.60.0
+line-profiler>=3.3.0
+
+# Optional: Parallel processing
+joblib>=1.1.0
+
+# Optional: Scientific computing
+scipy>=1.7.0

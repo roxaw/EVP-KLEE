@@ -1,0 +1,48 @@
+{
+  "name": "EVP-KLEE Development",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-vscode.cpptools",
+        "ms-vscode.cmake-tools",
+        "yzhang.markdown-all-in-one",
+        "ms-vscode.vscode-json",
+        "ms-python.pylint",
+        "ms-python.black-formatter",
+        "ms-toolsai.jupyter"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/bin/python3",
+        "python.terminal.activateEnvironment": true,
+        "C_Cpp.default.compilerPath": "/usr/bin/clang-10",
+        "C_Cpp.default.cStandard": "c11",
+        "C_Cpp.default.cppStandard": "c++17",
+        "files.associations": {
+          "*.bc": "llvm-ir",
+          "*.ll": "llvm-ir"
+        }
+      }
+    }
+  },
+  "postCreateCommand": "bash scripts/startup_evp_klee.sh",
+  "remoteUser": "vscode",
+  "containerEnv": {
+    "LLVM_VERSION": "10",
+    "CLANG_VERSION": "10",
+    "KLEE_VERSION": "2.3"
+  },
+  "mounts": [
+    "source=${localWorkspaceFolder}/evp_artifacts,target=/workspaces/evp-klee-artifact/evp_artifacts,type=bind,consistency=cached"
+  ],
+  "workspaceFolder": "/workspaces/evp-klee-artifact",
+  "shutdownAction": "none"
+}
