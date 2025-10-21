@@ -1,5 +1,5 @@
 # EVP-KLEE Project
-EVP-KLEE is an automated symbolic execution pipeline that enhances KLEE with value profiling capabilities for improved performance and coverage analysis.
+EVP-KLEE is an extension of KLEE with EVP approach enabled on atop to reduce solver workload.
 
 - **Ubuntu 20.04** base environment
 - **LLVM 10** and **Clang 10** with debug support
