@@ -1,0 +1,4 @@
+KLEE: Using Z3 solver backend
+KLEE: VASE solver wrapper enabled (compile-time).
+KLEE: HaltTimer invoked
+KLEE: halting execution, dumping remaining states

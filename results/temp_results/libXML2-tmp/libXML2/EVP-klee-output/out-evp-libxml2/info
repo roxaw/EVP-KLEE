@@ -1,0 +1,20 @@
+/home/roxana/klee-env/klee-source/klee/build/bin/klee --solver-backend=z3 --libc=uclibc --posix-runtime --search=dfs --max-forks=10000 --max-time=1800s --max-memory=8000 --only-output-states-covering-new --watchdog --vase-map=limitedValuedMap.json --output-dir=out-vase-libxml2 test_driver.bc 4
+PID: 183408
+Using monotonic steady clock with 1/1000000000s resolution
+Started: 2025-08-31 21:02:05
+BEGIN searcher description
+DFSSearcher
+END searcher description
+Finished: 2025-08-31 21:32:05
+Elapsed: 00:30:00
+KLEE: done: explored paths = 1471
+KLEE: done: avg. constructs per query = 107
+KLEE: done: total queries = 169081
+KLEE: done: valid queries = 168412
+KLEE: done: invalid queries = 669
+KLEE: done: query cex = 29364
+
+KLEE: done: total instructions = 94117829
+KLEE: done: completed paths = 1449
+KLEE: done: partially completed paths = 22
+KLEE: done: generated tests = 68
