@@ -1,0 +1,3 @@
+Program,EVP Mean (ms),Vanilla Mean (ms),Mean Improvement (%),Mean Speedup,EVP Median (ms),Vanilla Median (ms),Median Improvement (%),Median Speedup,EVP Total (ms),Vanilla Total (ms),Total Improvement (%),Total Speedup,EVP Samples,Vanilla Samples
+SQLITE,18627983.29,27851868.70,33.12,1.50x,20383015.50,29724944.00,31.43,1.46x,3353036993.00,5041188235.00,33.49,1.50x,180,181
+LIBXML2,231744845.22,801871106.49,71.10,3.46x,217241603.00,801518386.50,72.90,3.69x,414359783253.00,1427330569547.00,70.97,3.44x,1788,1780
